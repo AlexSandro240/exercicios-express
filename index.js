@@ -1,8 +1,17 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 
 const saudacao = require('./saudacaoMid'); 
 
+const usuarioApi = require('./api/usuario');
+
+app.post('/usuario', usuarioApi.salvar);
+app.get('/usuario', usuarioApi.obter);
+
+
+app.use(bodyParser.text())
+app.use(bodyParser.json())
 app.use(saudacao('Sandro'));
 
 app.use((req, res, next) => {
@@ -15,14 +24,16 @@ app.get('/clientes/relatorio', (requisicao, resposta) => {
 });
 
 app.post('/corpo', (req, res) => {
-    let corpo = ''
-    req.on('data', function(parte){
-        corpo += parte
-    })
+    // let corpo = ''
+    // req.on('data', function(parte){
+    //     corpo += parte
+    // })
 
-    req.on('end', function(){
-        res.send(corpo)
-    })
+    // req.on('end', function(){
+    //     res.send(corpo)
+    // })
+
+    res.send(req.body)
 });
 
 app.get('cliente/:id', (req, res) => {
